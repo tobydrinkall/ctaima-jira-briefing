@@ -263,6 +263,103 @@
     margin: 20px 0;
   }
 
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 8px 0 20px;
+  }
+
+  .col-block h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+  }
+
+  .col-block ul {
+    margin: 0 0 0 20px;
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.7;
+  }
+
+  .col-block li {
+    margin-bottom: 8px;
+  }
+
+  .badge-native { background: #fef2f2; color: #991b1b; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-gaps { background: #fef2f2; color: #991b1b; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Workaround sub-section */
+  .workaround-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 8px 0 4px;
+  }
+
+  .workaround-title::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #D6006C, #e84393);
+    border-radius: 2px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+  }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0 4px;
+    font-size: 14px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+  }
+
+  .compare-table thead th {
+    background: #1e1e2e;
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 18px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+  }
+
+  .compare-table tbody td {
+    padding: 12px 18px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #374151;
+    line-height: 1.5;
+  }
+
+  .compare-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .compare-table tbody tr:hover {
+    background: #f9fafb;
+  }
+
+  .compare-table tbody td strong {
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; gap: 16px; }
+  }
+
   /* Layer card header */
   .layer-header {
     display: flex;
@@ -340,23 +437,66 @@
     </div>
 
     <div class="card">
-      <h2>What exists today (what you can tell Osmin for CTaima)</h2>
+      <h2>What exists today</h2>
 
-      <h3>Current native integration can:</h3>
-      <ul>
-        <li>Add a &ldquo;Devin&rdquo; label to a Jira ticket &rarr; Devin scopes it, comments with a plan + confidence estimate (red/yellow/green), then you click to start a session</li>
-        <li>Bulk-label multiple tickets to scope in parallel</li>
-        <li>One-way (Devin reads Jira) or two-way (Jira label triggers Devin session mapped to a playbook) &mdash; Citi has the full two-way setup via Moritz Stephan</li>
-      </ul>
+      <div class="two-col">
+        <div class="col-block">
+          <h3><span class="badge-native">Native</span> What it can do today</h3>
+          <ul>
+            <li>Add a <code>Devin</code> label to a Jira ticket &rarr; Devin scopes it, comments with a plan + confidence estimate (red/yellow/green), then you click to start a session</li>
+            <li>Bulk-label multiple tickets to scope in parallel</li>
+            <li>Two-way: Jira label triggers Devin session mapped to a playbook (Citi has this via Moritz Stephan)</li>
+          </ul>
+        </div>
+        <div class="col-block">
+          <h3><span class="badge-gaps">Gaps</span> What it cannot do</h3>
+          <ul>
+            <li>Reliably &ldquo;look at a Jira board&rdquo; and scan/prioritise tickets autonomously</li>
+            <li>Send off sequential Jira tickets automatically (plan A &rarr; complete &rarr; move to B)</li>
+            <li>Trigger from arbitrary labels (only <code>Devin</code> label) &mdash; customers have asked for custom prefixed labels like <code>Devin-Support</code></li>
+          </ul>
+        </div>
+      </div>
 
-      <h3>Current integration CANNOT:</h3>
-      <ul>
-        <li>Reliably &ldquo;look at a Jira board&rdquo; and scan/prioritize tickets autonomously</li>
-        <li>Send off sequential Jira tickets automatically (plan ticket A, complete it, move to ticket B)</li>
-        <li>Trigger from arbitrary labels (only &ldquo;Devin&rdquo; label) &mdash; customers have asked for custom prefixed labels like &ldquo;Devin-Support&rdquo;</li>
-      </ul>
+      <div class="workaround-title">Workaround: Atlassian / Jira MCP</div>
+      <p>Most customers are using the <strong>Jira MCP from the marketplace</strong> instead. This gives Devin read/write access to Jira within sessions via natural language &mdash; query boards, read tickets, update status, post comments. Brian Smitches shipped a PR adding a callout on the native Jira settings page recommending users also add the MCP.</p>
 
-      <p><strong>Workaround being used by most customers:</strong> The <strong>Atlassian/Jira MCP</strong> from the marketplace. This gives Devin read/write access to Jira in sessions via natural language. Brian even got Devin to ship a PR adding a callout on the Jira integration settings page recommending users also add the Jira MCP.</p>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Native Integration</th>
+            <th>Jira MCP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Trigger Devin from Jira ticket</td>
+            <td>Yes (label-based)</td>
+            <td>No (session-initiated)</td>
+          </tr>
+          <tr>
+            <td>Read/query a Jira board</td>
+            <td>No</td>
+            <td><strong>Yes</strong></td>
+          </tr>
+          <tr>
+            <td>Create/update tickets in-session</td>
+            <td>Limited</td>
+            <td><strong>Yes</strong></td>
+          </tr>
+          <tr>
+            <td>Map playbook to label</td>
+            <td>Yes (Citi pattern)</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Sequential ticket workflows</td>
+            <td>No</td>
+            <td>Possible (within one session)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="card">
